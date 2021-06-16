@@ -1,13 +1,16 @@
+import 'package:e_commerce_firebase/controller/auth_controller.dart';
 import 'package:e_commerce_firebase/pages/widgets/CustomText.dart';
 
 import 'package:e_commerce_firebase/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatelessWidget  {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final AuthController _controller = Get.put(AuthController());
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     return Scaffold(
       backgroundColor: Colors.white,
@@ -153,7 +156,9 @@ class LoginScreen extends StatelessWidget {
                   color: Colors.grey.shade50,
                 ),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _controller.facebookLogion();
+                  },
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -181,7 +186,9 @@ class LoginScreen extends StatelessWidget {
                   color: Colors.grey.shade50,
                 ),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _controller.googleSignup();
+                  },
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
