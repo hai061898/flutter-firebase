@@ -1,22 +1,29 @@
 import 'package:e_commerce_firebase/controller/auth_controller.dart';
+import 'package:e_commerce_firebase/pages/login/login_screen.dart';
 import 'package:e_commerce_firebase/pages/widgets/CustomText.dart';
-
 import 'package:e_commerce_firebase/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterView extends GetWidget<AuthController> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final AuthController _controller = Get.put(AuthController());
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    final AuthController controller = Get.put(AuthController());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
+        leading: GestureDetector(
+            onTap: () {
+              Get.off(LoginScreen());
+            },
+            child: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            )),
       ),
       body: Padding(
         padding: const EdgeInsets.only(
@@ -28,31 +35,42 @@ class LoginScreen extends StatelessWidget {
           key: _formKey,
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    text: "Welcome",
-                    fontSize: 30,
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    // onTap: Get.to(RegisterScreen()),
-                    child: CustomText(
-                      text: "Sign Up",
-                      color: kPrimaryColor,
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
+              CustomText(
+                text: "Sign Up,",
+                fontSize: 30,
               ),
               SizedBox(
-                height: 10,
+                height: 30,
               ),
-              CustomText(
-                text: 'Sign in to Continue',
-                fontSize: 14,
-                color: Colors.grey,
+              Container(
+                child: Column(
+                  children: [
+                    Text(
+                      'Name',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.green.shade900,
+                      ),
+                    ),
+                    TextFormField(
+                      onSaved: (value) {
+                        controller.name = value;
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          print('error');
+                        }
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'What your name?',
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                        fillColor: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(
                 height: 30,
@@ -69,40 +87,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     TextFormField(
                       onSaved: (value) {
-                        _controller.email = value;
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          print("ERROR");
-                        }
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'your@gmail.com',
-                        hintStyle: TextStyle(
-                          color: Colors.black,
-                        ),
-                        fillColor: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Container(
-                child: Column(
-                  children: [
-                    Text(
-                      'Password',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.green.shade900,
-                      ),
-                    ),
-                    TextFormField(
-                      onSaved: (value) {
-                        _controller.password = value;
+                        controller.password = value;
                       },
                       validator: (value) {
                         if (value == null) {
@@ -110,7 +95,7 @@ class LoginScreen extends StatelessWidget {
                         }
                       },
                       decoration: InputDecoration(
-                        hintText: '*********',
+                        hintText: 'email',
                         hintStyle: TextStyle(
                           color: Colors.black,
                         ),
@@ -121,12 +106,37 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 40,
               ),
-              CustomText(
-                text: 'Forgot Password?',
-                fontSize: 14,
-                alignment: Alignment.topRight,
+              Container(
+                child: Column(
+                  children: [
+                    Text(
+                      'password',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.green.shade900,
+                      ),
+                    ),
+                    TextFormField(
+                      onSaved: (value) {
+                        controller.password = value;
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          print('error');
+                        }
+                      },
+                      decoration: InputDecoration(
+                        hintText: '******** ?',
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                        fillColor: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(
                 height: 15,
@@ -140,7 +150,7 @@ class LoginScreen extends StatelessWidget {
                   onPressed: () {
                     _formKey.currentState!.save();
                     if (_formKey.currentState!.validate()) {
-                      _controller.signInWithEmailAndPassword();
+                      controller.signInWithEmailAndPassword();
                     }
                   },
                   style: TextButton.styleFrom(
@@ -159,70 +169,6 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox(
                 height: 40,
-              ),
-              CustomText(
-                text: '-OR-',
-                alignment: Alignment.center,
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(11),
-                  color: Colors.grey.shade50,
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    _controller.facebookLogion();
-                  },
-                  style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Image.asset("assets/images/facebook.png"),
-                      SizedBox(
-                        width: 100,
-                      ),
-                      CustomText(
-                        text: 'Sign In with Facebook',
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(11),
-                  color: Colors.grey.shade50,
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    _controller.googleSignup();
-                  },
-                  style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Image.asset("assets/images/google.png"),
-                      SizedBox(
-                        width: 100,
-                      ),
-                      CustomText(
-                        text: 'Sign In with Google',
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ],
           ),
